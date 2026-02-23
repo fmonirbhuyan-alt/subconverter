@@ -159,7 +159,47 @@ export default {
             } catch (e) { continue; }
         }
 
-        // If all backends are down or blocking the request, return a clear 503 instead of the misleading format error
+        // Fallback: If all backends are down or blocking, fetch the raw config directly for V2Ray apps!
+        const targetParam = url.searchParams.get('target') || 'v2ray';
+        const rawUrlParam = url.searchParams.get('url');
+
+        if (rawUrlParam && (targetParam === 'v2ray' || targetParam === 'mixed')) {
+            try {
+                // The URL might be multiple URLs joined by '|'
+                const urls = rawUrlParam.split('|');
+                let combinedText = '';
+
+                for (const singleUrl of urls) {
+                    const fallbackResponse = await fetch(new Request(singleUrl, {
+                        method: 'GET',
+                        redirect: 'follow',
+                        headers: { 'User-Agent': 'v2rayNG/1.8.8' }
+                    }));
+
+                    if (fallbackResponse.ok) {
+                        const text = await fallbackResponse.text();
+                        combinedText += text + '\n';
+                    }
+                }
+
+                if (combinedText.trim()) {
+                    const fallbackHeaders = new Headers();
+                    fallbackHeaders.set('Access-Control-Allow-Origin', '*');
+
+                    if (!isAdmin) {
+                        fallbackHeaders.set('Content-Type', 'text/plain; charset=utf-8');
+                    } else {
+                        fallbackHeaders.set('Content-Disposition', 'attachment; filename="DigitalFreedom.yml"');
+                        fallbackHeaders.set('Content-Type', 'application/octet-stream; charset=utf-8');
+                    }
+                    return new Response(combinedText, { status: 200, headers: fallbackHeaders });
+                }
+            } catch (e) {
+                // Ignore fallback error and proceed to Gateway Error
+            }
+        }
+
+        // If all backends are down or blocking the request, and fallback also fails, return a clear 503
         return new Response('Gateway Error: All remote backends are blocking the request or offline.', {
             status: 503,
             headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin': '*' }
