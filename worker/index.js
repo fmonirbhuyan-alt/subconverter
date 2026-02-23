@@ -1,5 +1,5 @@
 /* Digital Freedom - Unified Backend v1.2.1 (Final Bypass + iOS Format Fix) */
-const BACKENDS = ['https://sub.x86.men', 'https://url.v1.mk', 'https://api.wuma.io'];
+const BACKENDS = ['https://api.asailor.org', 'https://sub-api.nanako.vip'];
 const SHORT_DOMAIN = 'https://s.digital-freedom.site';
 
 export default {
