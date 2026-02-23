@@ -20,3 +20,7 @@ command = ""
 
 # Compatibility flags
 compatibility_flags = []
+
+[[kv_namespaces]]
+binding = "SHORT_URL_STORAGE"
+id = "11fce092ba0d45ef8d44ce4641a8f5b6"
