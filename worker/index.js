@@ -71,6 +71,13 @@ export default {
         // 4. Subscription Proxy Logic
         if (finalLongUrl) {
             const targetUrl = new URL(finalLongUrl);
+
+            // PRESERVE QUERY PARAMS: if the user agent / app appended query string (like target=clash) 
+            // to the shortlink, we need to apply them to our targetUrl so the backend knows what to return.
+            for (const [key, value] of url.searchParams.entries()) {
+                targetUrl.searchParams.set(key, value);
+            }
+
             const targetParam = targetUrl.searchParams.get('target') || 'v2ray';
 
             const buildHeaders = () => {
