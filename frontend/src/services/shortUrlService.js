@@ -10,21 +10,20 @@ export class ShortUrlService {
    * @param {string} longUrl - 长链接
    * @returns {Promise<string>} 短链接
    */
-  static async generateShortUrl($axios, longUrl) {
-    // 构建请求数据
-    const formData = new FormData();
-    formData.append("longUrl", btoa(longUrl));
-
-    const response = await $axios.post(CONSTANTS.SHORT_URL_API, formData, {
+  static async generateShortUrl($axios, longUrl, sourceUrl = "") {
+    const response = await $axios.post(CONSTANTS.SHORT_URL_API, {
+      longUrl: longUrl,
+      sourceUrl: sourceUrl
+    }, {
       headers: {
-        "Content-Type": "application/form-data; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8"
       }
     });
 
-    if (response.data.Code === 1 && response.data.ShortUrl !== "") {
-      return response.data.ShortUrl;
+    if (response.data && (response.data.Code === 1 || response.data.shortUrl)) {
+      return response.data.ShortUrl || response.data.shortUrl;
     } else {
-      throw new Error(response.data.Message || "短链接获取失败");
+      throw new Error(response.data.Message || response.data.error || "Shortlink generation failed");
     }
   }
 
@@ -52,5 +51,44 @@ export class ShortUrlService {
    */
   static handleShortUrlError($message) {
     $message.error("短链接获取失败");
+  }
+
+  /**
+   * List all shortlinks (Admin)
+   * @param {Object} $axios - Axios实例
+   * @param {string} password - Admin password
+   * @returns {Promise<Array>} Shortlink list
+   */
+  static async listShortUrls($axios, password) {
+    const response = await $axios.get('/api/admin/list', {
+      headers: { 'Authorization': password }
+    });
+    return response.data;
+  }
+
+  /**
+   * Delete a shortlink (Admin)
+   * @param {Object} $axios - Axios实例
+   * @param {string} id - Shortcode
+   * @param {string} password - Admin password
+   */
+  static async deleteShortUrl($axios, id, password) {
+    await $axios.post('/api/admin/delete', { id }, {
+      headers: { 'Authorization': password }
+    });
+  }
+
+  /**
+   * Toggle block status (Admin)
+   * @param {Object} $axios - Axios实例
+   * @param {string} id - Shortcode
+   * @param {string} password - Admin password
+   * @returns {Promise<boolean>} New blocked status
+   */
+  static async toggleBlock($axios, id, password) {
+    const response = await $axios.post('/api/admin/toggle', { id }, {
+      headers: { 'Authorization': password }
+    });
+    return response.data.blocked;
   }
 }

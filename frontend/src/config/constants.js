@@ -4,9 +4,13 @@ export const CONSTANTS = {
   REMOTE_CONFIG_SAMPLE: import.meta.env.VITE_SUBCONVERTER_REMOTE_CONFIG,
   DOC_ADVANCED: import.meta.env.VITE_SUBCONVERTER_DOC_ADVANCED,
   BACKEND_RELEASE: import.meta.env.VITE_BACKEND_RELEASE,
-  DEFAULT_BACKEND: import.meta.env.VITE_SUBCONVERTER_DEFAULT_BACKEND + '/sub?',
+  // Ensure we don't double up /sub? segments
+  DEFAULT_BACKEND: (import.meta.env.VITE_SUBCONVERTER_DEFAULT_BACKEND.endsWith('/sub?')
+    ? import.meta.env.VITE_SUBCONVERTER_DEFAULT_BACKEND
+    : import.meta.env.VITE_SUBCONVERTER_DEFAULT_BACKEND.replace(/\/$/, '') + '/sub?'),
   SHORT_URL_API: import.meta.env.VITE_MYURLS_API,
   CONFIG_UPLOAD_API: import.meta.env.VITE_CONFIG_UPLOAD_API,
+  SHORT_URL_BASE: import.meta.env.VITE_SHORT_URL_BASE || '',
   BOT_LINK: import.meta.env.VITE_BOT_LINK,
   DEFAULT_CLIENT_TYPE: 'clash',
   BUTTON_WIDTH: '140px',

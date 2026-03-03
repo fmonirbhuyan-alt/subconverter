@@ -3,24 +3,40 @@ main = "index.js"
 compatibility_date = "2024-01-01"
 
 # Workers configuration
-workers_dev = true
+workers_dev = false
 
-# Routes (will be configured after deployment)
+# Routes for your domain
 # routes = [
 #   { pattern = "api.digital-freedom.site/*", zone_name = "digital-freedom.site" }
 # ]
 
 # Environment variables
 [vars]
+<<<<<<< HEAD
 BACKEND_URL = "https://digital-freedom-backend.onrender.com"
+=======
+PRIMARY_BACKEND = "https://api.asailor.org"
+BACKUP_BACKEND = "https://sub.id9.cc"
+FRONTEND_URL = "https://sub.digital-freedom.site"
+SHORT_URL_BASE = "https://sub.digital-freedom.site"
+ADMIN_PASSWORD = "DFAdMiN"
+
+# KV Namespace for Shortlinks (Matched with your Cloudflare screenshot)
+[[kv_namespaces]]
+binding = "SHORT_URL_STORAGE"
+id = "icy-cell-95f7"
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
 
 # Build configuration
 [build]
 command = ""
 
+<<<<<<< HEAD
 # Compatibility flags
 compatibility_flags = []
 
 [[kv_namespaces]]
 binding = "SHORT_URL_STORAGE"
 id = "11fce092ba0d45ef8d44ce4641a8f5b6"
+=======
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)

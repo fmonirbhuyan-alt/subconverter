@@ -7,7 +7,7 @@
             Digital Freedom Subscription Converter
             <svg-icon icon-class="github" style="margin-left: 20px" @click="goToProject" />
 
-            <div style="display: inline-block; position:absolute; right: 20px">{{ backendVersion }}</div>
+            <div style="display: inline-block; position:absolute; right: 20px; font-weight: bold; color: #409EFF;">{{ backendVersion }} Advanced</div>
           </div>
           <el-container>
             <el-form :model="form" label-width="140px" label-position="left" style="width: 100%">
@@ -17,11 +17,15 @@
               </el-form-item>
               <el-form-item label="Sub Link:">
                 <el-input v-model="form.sourceSubUrl" type="textarea" rows="3"
-                  placeholder="Supports subscriptions or ss/ssr/vmess links. Multiple links per line or separated by |" @blur="saveSubUrl" />
+                  placeholder="" @blur="saveSubUrl" />
               </el-form-item>
 
               <el-form-item label="Node Scan:">
                 <el-button type="primary" icon="el-icon-search" @click="scanNodes" :loading="scanLoading">Scan Now</el-button>
+<<<<<<< HEAD
+=======
+                <el-button v-if="advanced === '2'" type="info" icon="el-icon-user" @click="handleViewUser" :loading="syncLoading">View User</el-button>
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
               </el-form-item>
 
               <div v-if="form.scannedNodes.length > 0 || form.scannedGroups.length > 0" style="margin-bottom: 20px;">
@@ -32,7 +36,12 @@
                         <span>Scan Results</span>
                       </div>
                       
+<<<<<<< HEAD
                       <div v-if="form.scannedGroups.length > 0">
+=======
+                      <!-- Detected Groups hidden as per user request to only show nodes -->
+                      <div v-if="false && form.scannedGroups.length > 0">
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
                         <div style="font-size: 14px; font-weight: bold; padding: 5px; color: #67C23A; border-bottom: 1px solid #eee;">Detected Groups</div>
                         <div v-for="(group, index) in form.scannedGroups" :key="'g'+index" class="text item" style="margin-bottom: 5px; display: flex; align-items: center;">
                           <el-button type="text" icon="el-icon-plus" @click="addToGlobalFind(group)" style="padding: 0; color: #67C23A;" title="Add to Global Find"></el-button>
@@ -52,6 +61,7 @@
                   </el-col>
                   <el-col :span="8">
                     <div style="font-weight: bold; margin-bottom: 10px; font-size: 13px; color: #606266;">Node Rename (Proxies)</div>
+<<<<<<< HEAD
                     <el-input type="textarea" :rows="8" v-model="form.findValue" placeholder="Names (e.g. 美国1)"></el-input>
                     <el-input v-model="form.replaceValue" placeholder="Replace with..." style="margin-top: 5px;"></el-input>
                   </el-col>
@@ -59,6 +69,21 @@
                     <div style="font-weight: bold; margin-bottom: 10px; font-size: 13px; color: #67C23A;">Global Rename (Groups/Text)</div>
                     <el-input type="textarea" :rows="8" v-model="form.globalFindValue" placeholder="Groups (e.g. 自动选择)"></el-input>
                     <el-input v-model="form.globalReplaceValue" placeholder="Replace with..." style="margin-top: 5px;"></el-input>
+=======
+                    <el-input type="textarea" :rows="8" v-model="form.findValue" placeholder=""></el-input>
+                    <el-select v-model="form.replaceValue" allow-create filterable placeholder="Select or Type" style="width: 100%; margin-top: 5px;">
+                      <el-option label="Digital Freedom" value="Digital Freedom"></el-option>
+                      <el-option label="DF" value="DF"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="8">
+                    <div style="font-weight: bold; margin-bottom: 10px; font-size: 13px; color: #67C23A;">Global Rename (Groups/Text)</div>
+                    <el-input type="textarea" :rows="8" v-model="form.globalFindValue" placeholder=""></el-input>
+                    <el-select v-model="form.globalReplaceValue" allow-create filterable placeholder="Select or Type" style="width: 100%; margin-top: 5px;">
+                      <el-option label="Digital Freedom" value="Digital Freedom"></el-option>
+                      <el-option label="DF" value="DF"></el-option>
+                    </el-select>
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
                   </el-col>
                 </el-row>
               </div>
@@ -71,7 +96,7 @@
               <div v-if="advanced === '2'">
                 <el-form-item label="Backend:">
                   <el-autocomplete style="width: 100%" v-model="form.customBackend" :fetch-suggestions="backendSearch"
-                    placeholder="Deploy your own backend service. Example: http://127.0.0.1:25500/sub?">
+                    placeholder="">
                     <el-button slot="append" @click="gotoGayhub" icon="el-icon-link">Repository</el-button>
                   </el-autocomplete>
                 </el-form-item>
@@ -85,17 +110,17 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="Include:">
-                  <el-input v-model="form.includeRemarks" placeholder="Keywords in node name, supports regex" />
+                  <el-input v-model="form.includeRemarks" placeholder="" />
                 </el-form-item>
                 <el-form-item label="Exclude:">
-                  <el-input v-model="form.excludeRemarks" placeholder="Keywords NOT in node name, supports regex" />
+                  <el-input v-model="form.excludeRemarks" placeholder="" />
                 </el-form-item>
                 <el-form-item label="FileName:">
-                  <el-input v-model="form.filename" placeholder="Subscription filename" />
+                  <el-input v-model="form.filename" placeholder="" />
                 </el-form-item>
 
                  <el-form-item v-for="(param, i) in customParams" :key="i">
-                  <el-input slot="label" v-model="param.name" placeholder="Param Name">
+                  <el-input slot="label" v-model="param.name" placeholder="">
                     <div slot="suffix" style="width: 10px;">:</div>
                   </el-input>
                   <el-input v-model="param.value" placeholder="Param Value">
@@ -107,6 +132,9 @@
                   <el-row type="flex">
                     <el-col>
                       <el-checkbox v-model="form.nodeList" label="Output As Node List" border></el-checkbox>
+                    </el-col>
+                    <el-col>
+                      <el-checkbox v-model="form.devLock" label="Device Lock (Single Device)" border></el-checkbox>
                     </el-col>
                     <el-popover placement="bottom" v-model="form.extraset">
                       <el-row>
@@ -170,9 +198,9 @@
                 </el-input>
               </el-form-item>
               <el-form-item label="Short Link:">
-                <el-input class="copy-content" disabled v-model="curtomShortSubUrl">
+                <el-input class="copy-content" disabled v-model="customShortSubUrl">
                   <el-button slot="append" @click="showQrCode" icon="el-icon-full-screen">QR Code</el-button>
-                  <el-button slot="append" v-clipboard:copy="curtomShortSubUrl" v-clipboard:success="onCopy"
+                  <el-button slot="append" v-clipboard:copy="customShortSubUrl" v-clipboard:success="onCopy"
                     ref="copy-btn" icon="el-icon-document-copy">Copy</el-button>
                 </el-input>
               </el-form-item>
@@ -277,6 +305,83 @@
         </el-button>
       </div>
     </el-dialog>
+    <!-- View User Dialog -->
+    <el-dialog :visible.sync="dialogUserListVisible" width="98%" top="2vh" custom-class="user-mgmt-dialog">
+      <div slot="title" style="display: flex; align-items: center; justify-content: space-between; padding-right: 40px;">
+        <span style="font-weight: bold; font-size: 18px; color: #409EFF;">
+           <i class="el-icon-user-solid"></i> User Management (Direct Access)
+        </span>
+        <div style="display: flex; align-items: center;">
+          <el-tag size="small" type="success" effect="dark" style="margin-right: 15px;">TOTAL: {{ adminUserList.length }}</el-tag>
+          <el-button type="primary" size="mini" @click="fetchUserList" :loading="syncLoading" icon="el-icon-refresh">Sync Now</el-button>
+        </div>
+      </div>
+
+      <div class="user-table-container">
+        <!-- Manual Loading Indicator if syncLoading is true -->
+        <div v-if="syncLoading" class="sync-overlay">
+           <i class="el-icon-loading"></i> Syncing Data...
+        </div>
+
+        <table v-if="adminUserList.length > 0" class="pure-excel-table">
+          <thead>
+            <tr>
+              <th width="40">#</th>
+              <th width="140">File Name</th>
+              <th width="60">Lock</th>
+              <th width="140">Created At</th>
+              <th>Main Link (Source)</th>
+              <th width="80">Short ID</th>
+              <th width="80">Status</th>
+              <th width="170">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, index) in adminUserList" :key="row.id">
+              <td class="center">{{ index + 1 }}</td>
+              <td class="filename">{{ row.filename || 'N/A' }}</td>
+              <td class="center">
+                <span class="lock-tag" :class="{ locked: row.dev_lock }">
+                  {{ row.dev_lock ? 'YES' : 'NO' }}
+                </span>
+              </td>
+              <td>{{ formatDate(row.created_at) }}</td>
+              <td class="link-cell">
+                <div class="url-text" @click="copySourceUrl(row)" title="Click to Copy Original Link">
+                  {{ row.source_url || row.url }}
+                </div>
+              </td>
+              <td class="center">
+                <span class="short-id" @click="copyUserUrl(row)">{{ row.id }}</span>
+              </td>
+              <td class="center">
+                <span class="status-tag" :class="{ blocked: row.blocked }">
+                  {{ row.blocked ? 'Demo Config' : 'Real Config' }}
+                </span>
+              </td>
+              <td class="center actions-cell">
+                <button class="btn btn-warn" @click="handleToggleBlock(row)">
+                  {{ row.blocked ? 'Back to Normal Config' : 'Redirect to Demo Config' }}
+                </button>
+                <button class="btn btn-danger" @click="handleDeleteUser(row)">
+                  Remove
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div v-if="adminUserList.length === 0 && !syncLoading" class="empty-state">
+           <i class="el-icon-warning-outline"></i>
+           <p>No user data found in storage. (Count: {{ adminUserList.length }})</p>
+           <el-button type="primary" size="small" @click="fetchUserList">Force Refresh</el-button>
+        </div>
+      </div>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogUserListVisible = false">Close Management Panel</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -316,7 +421,14 @@ export default {
       // 配置选项
       options: {
         clientTypes: CLIENT_TYPES,
-        backendOptions: [{ value: "http://127.0.0.1:25500/sub?" }],
+        backendOptions: [
+          { value: "http://192.168.31.222:8888/sub?" },
+          { value: "http://127.0.0.1:8888/sub?" },
+          { value: "https://api.v1.mk/sub?" },
+          { value: "https://sub.xeton.dev/sub?" },
+          { value: "https://sub.id9.cc/sub?" },
+          { value: "http://127.0.0.1:25500/sub?" }
+        ],
         remoteConfig: REMOTE_CONFIGS
       },
 
@@ -324,7 +436,11 @@ export default {
       backendVersion: "",
       loading: false,
       scanLoading: false,
+<<<<<<< HEAD
       curtomShortSubUrl: "",
+=======
+      customShortSubUrl: "",
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
       dialogUploadConfigVisible: false,
       loadConfig: "",
       dialogLoadConfigVisible: false,
@@ -332,6 +448,12 @@ export default {
       subDocAdvanced: CONSTANTS.DOC_ADVANCED,
       dialogQrCodeVisible: false,
       qrCodeUrl: "",
+      
+      // User Management
+      dialogUserListVisible: false,
+      adminUserList: [],
+      syncLoading: false,
+      adminPassword: "",
 
       // 是否为 PC 端
       isPC: true,
@@ -381,6 +503,13 @@ export default {
   mounted() {
     this.form.clientType = CONSTANTS.DEFAULT_CLIENT_TYPE;
     this.getBackendVersion();
+<<<<<<< HEAD
+=======
+    // 延迟加载隐私提示已经被注释掉，避免弹窗
+    // setTimeout(() => {
+    //   this.notify();
+    // }, 1000);
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
   },
   methods: {
     onCopy() {
@@ -409,8 +538,8 @@ export default {
       window.open(
         url +
         encodeURIComponent(
-          this.curtomShortSubUrl !== ""
-            ? this.curtomShortSubUrl
+          this.customShortSubUrl !== ""
+            ? this.customShortSubUrl
             : this.customSubUrl
         )
       );
@@ -419,9 +548,10 @@ export default {
     makeUrlClick() {
       const url = this.makeUrl(this.form, this.advanced, this.processedSubUrl, this.currentBackend, this.customParams, this.needUdp);
       if (url) {
+        console.log(`Generated URL Length: ${url.length}`);
         this.customSubUrl = url;
         this.$copyText(this.customSubUrl);
-        this.$message.success("Custom sub link copied to clipboard");
+        this.$message.success(`Custom sub link copied (${url.length} chars)`);
       } else {
         this.$message.error("Subscription link and client are required");
       }
@@ -434,10 +564,11 @@ export default {
       }
 
       this.loading = true;
+      const sourceUrl = this.form.sourceSubUrl || "";
 
-      ShortUrlService.generateShortUrl(this.$axios, this.customSubUrl)
+      ShortUrlService.generateShortUrl(this.$axios, this.customSubUrl, sourceUrl)
         .then(shortUrl => {
-          this.curtomShortSubUrl = shortUrl;
+          this.customShortSubUrl = shortUrl;
           this.$copyText(shortUrl);
           this.$message.success("Short link copied to clipboard");
         })
@@ -466,6 +597,13 @@ export default {
           
           if (res.nodes.length > 0 || res.groups.length > 0) {
             this.$message.success(`Scanned ${res.nodes.length} nodes and ${res.groups.length} groups.`);
+<<<<<<< HEAD
+=======
+            // Automatically apply smart filter if nodes are found
+            if (res.nodes.length > 0) {
+              this.applySmartFilter(res.nodes);
+            }
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
           } else {
             this.$message.info("No nodes or groups found.");
           }
@@ -478,9 +616,51 @@ export default {
         });
     },
 
+<<<<<<< HEAD
     smartClean() {
       const junkPatterns = [
         "到期", "GB"
+=======
+    applySmartFilter(nodes) {
+      // Escape special characters and join with | for regex
+      const filterRegex = nodes
+        .map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+        .join('|');
+      
+      if (filterRegex.length > 2500) {
+        this.$confirm(
+          `The filter list is very long (${filterRegex.length} chars). This may cause "502 Bad Gateway" errors. Work with only the first 50 nodes instead?`,
+          'Warning: Long Filter',
+          {
+            confirmButtonText: 'Yes, Optimize',
+            cancelButtonText: 'No, Keep All',
+            type: 'warning'
+          }
+        ).then(() => {
+          const optimizedNodes = nodes.slice(0, 50);
+          this.applySmartFilter(optimizedNodes);
+        }).catch(() => {
+          this.form.includeRemarks = filterRegex;
+          this.form.fpg = true;
+          this.$message.warning("Large filter applied. If you get a 502 error, try selecting fewer nodes.");
+        });
+        return;
+      }
+
+      this.form.includeRemarks = filterRegex;
+      this.form.fpg = true; // Ensure Filter Proxy Groups is on
+      this.$message({
+        message: 'Smart filtering applied: Only scanned nodes will be included.',
+        type: 'success',
+        duration: 3000
+      });
+    },
+
+    smartClean() {
+      const junkPatterns = [
+        "重置", "剩余", "流量", "到期", "GB", "MB", 
+        "官网", "更-新", "线路", "bing"
+>>>>>>> 62a8b61 (Final live update: Branding, rename presets, user-agent fix, and bundled worker code)
       ];
       
       const regex = `(${junkPatterns.join('|')})`;
@@ -635,11 +815,11 @@ export default {
     },
 
     showQrCode() {
-      if (this.curtomShortSubUrl === "") {
+      if (this.customShortSubUrl === "") {
         this.$message.warning("Please generate a short link first");
         return;
       }
-      this.qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(this.curtomShortSubUrl)}`;
+      this.qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(this.customShortSubUrl)}`;
       this.dialogQrCodeVisible = true;
     },
 
@@ -720,6 +900,115 @@ export default {
       }
     },
 
+    // User Management Methods
+    handleViewUser() {
+      this.$prompt('Please enter Admin Password', 'Security Check', {
+        confirmButtonText: 'Login',
+        cancelButtonText: 'Cancel',
+        inputType: 'password'
+      }).then(({ value }) => {
+        this.adminPassword = value;
+        this.dialogUserListVisible = true;
+        this.fetchUserList();
+      }).catch(() => {});
+    },
+
+    fetchUserList() {
+      if (this.syncLoading) return;
+      this.syncLoading = true;
+      
+      console.log("Admin Sync: Fetching list...");
+
+      fetch('/api/admin/list', {
+        headers: { 
+          'Authorization': this.adminPassword,
+          'Accept': 'application/json'
+        }
+      })
+      .then(async response => {
+        if (!response.ok) {
+           const text = await response.text();
+           throw new Error(text || `HTTP ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(res => {
+        if (Array.isArray(res)) {
+          console.log(`Admin Sync: Success, ${res.length} items`);
+          // Use sort if needed, but ensure reactivity
+          const sorted = res.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+          this.adminUserList = sorted;
+          if (sorted.length > 0) {
+            this.$message.success(`Found ${sorted.length} users`);
+          }
+        } else {
+          this.adminUserList = [];
+          console.warn("Unexpected response:", res);
+        }
+      })
+      .catch(err => {
+        console.error("Admin Sync Detailed Error:", err);
+        this.$message.error("Sync Error: " + err.message);
+        if (err.message.includes("401")) this.dialogUserListVisible = false;
+      })
+      .finally(() => {
+        this.syncLoading = false;
+        console.log("Admin Sync: Finished");
+      });
+    },
+
+    handleToggleBlock(row) {
+      ShortUrlService.toggleBlock(this.$axios, row.id, this.adminPassword)
+        .then(newStatus => {
+          row.blocked = newStatus;
+          this.$message.success(newStatus ? "Redirected to Demo Config" : "Restored Normal Config");
+        })
+        .catch(err => {
+          this.$message.error("Operation failed: " + err.message);
+        });
+    },
+
+    handleDeleteUser(row) {
+      this.$confirm('Are you sure you want to delete this shortlink?', 'Warning', {
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        ShortUrlService.deleteShortUrl(this.$axios, row.id, this.adminPassword)
+          .then(() => {
+            this.$message.success("Shortlink deleted");
+            this.fetchUserList();
+          })
+          .catch(err => {
+            this.$message.error("Deletion failed: " + err.message);
+          });
+      });
+    },
+
+    copyUserUrl(row) {
+      let shortUrlBase = CONSTANTS.SHORT_URL_BASE || window.location.origin;
+      shortUrlBase = shortUrlBase.replace(/\/$/, "");
+      const fullUrl = `${shortUrlBase}/${row.id}`;
+      this.$copyText(fullUrl);
+      this.$message.success("URL copied to clipboard");
+    },
+
+    copySourceUrl(row) {
+      const url = row.source_url || row.url;
+      this.$copyText(url);
+      this.$message.success("Original link copied to clipboard");
+    },
+
+    handleOpenUrl(url) {
+      if (url) window.open(url, '_blank');
+    },
+
+    formatDate(dateStr) {
+      if (!dateStr) return "N/A";
+      const d = new Date(dateStr);
+      return d.toLocaleString();
+    },
+
     // 表单相关方法
     saveSubUrl() {
       saveSubscriptionUrl(this.form);
@@ -735,3 +1024,163 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.user-mgmt-dialog :deep(.el-dialog__body) {
+  padding: 10px 20px 20px;
+}
+
+.user-table-container {
+  position: relative;
+  min-height: 200px;
+  max-height: 650px;
+  overflow-y: auto;
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.sync-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #409EFF;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.sync-overlay i {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.pure-excel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: #606266;
+  table-layout: fixed;
+}
+
+.pure-excel-table th {
+  background-color: #f5f7fa;
+  color: #909399;
+  font-weight: bold;
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 2px solid #ebeef5;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.pure-excel-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ebeef5;
+  word-break: break-all;
+  vertical-align: middle;
+}
+
+.pure-excel-table tr:hover {
+  background-color: #f0f9eb;
+}
+
+.center { text-align: center; }
+
+.filename {
+  font-weight: 500;
+  color: #303133;
+}
+
+.lock-tag {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  background: #f4f4f5;
+  color: #909399;
+}
+.lock-tag.locked {
+  background: #fdf6ec;
+  color: #e6a23c;
+  border: 1px solid #faecd8;
+}
+
+.status-tag {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: bold;
+  background: #f0f9eb;
+  color: #67c23a;
+}
+.status-tag.blocked {
+  background: #fef0f0;
+  color: #f56c6c;
+}
+
+.short-id {
+  background: #ecf5ff;
+  color: #409eff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px dashed #409eff;
+}
+.short-id:hover {
+  background: #409eff;
+  color: #fff;
+}
+
+.url-text {
+  color: #409EFF;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  cursor: pointer;
+}
+.url-text:hover {
+  text-decoration: underline;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.btn {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+.btn-warn { background: #e6a23c; color: #fff; }
+.btn-warn:hover { background: #cf9236; }
+.btn-danger { background: #f56c6c; color: #fff; }
+.btn-danger:hover { background: #dd6161; }
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  color: #909399;
+}
+.empty-state i {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+</style>
