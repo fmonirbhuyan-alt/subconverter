@@ -1,13 +1,20 @@
 {
   "name": "subscription-converter-worker",
   "version": "1.0.0",
+  "type": "module",
   "description": "Cloudflare Worker for Digital Freedom Subscription Converter",
   "main": "index.js",
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev"
+    "dev": "wrangler dev --port 8888 --ip 0.0.0.0"
   },
-  "keywords": ["cloudflare", "worker", "proxy", "subscription", "converter"],
+  "keywords": [
+    "cloudflare",
+    "worker",
+    "proxy",
+    "subscription",
+    "converter"
+  ],
   "author": "Digital Freedom",
   "license": "MIT",
   "dependencies": {

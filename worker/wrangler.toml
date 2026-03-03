@@ -5,6 +5,11 @@ compatibility_date = "2024-01-01"
 # Workers configuration
 workers_dev = false
 
+# Routes for your domain
+# routes = [
+#   { pattern = "api.digital-freedom.site/*", zone_name = "digital-freedom.site" }
+# ]
+
 # Environment variables
 [vars]
 PRIMARY_BACKEND = "https://api.asailor.org"
@@ -13,7 +18,7 @@ FRONTEND_URL = "https://sub.digital-freedom.site"
 SHORT_URL_BASE = "https://sub.digital-freedom.site"
 ADMIN_PASSWORD = "DFAdMiN"
 
-# KV Namespace for Shortlinks
+# KV Namespace for Shortlinks (Matched with your Cloudflare screenshot)
 [[kv_namespaces]]
 binding = "SHORT_URL_STORAGE"
 id = "icy-cell-95f7"
@@ -21,3 +26,5 @@ id = "icy-cell-95f7"
 # Build configuration
 [build]
 command = ""
+
+

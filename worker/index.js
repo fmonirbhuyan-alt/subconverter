@@ -33,7 +33,7 @@ async function sha256(message) {
  * This forces the client to overwrite their working config with a "dead" one.
  */
 async function returnDummyConfig(target, filename) {
-    const remoteUrl = "https://sub.digital-freedom.site/87mf5l";
+    const remoteUrl = "http://192.168.31.222:8888/87mf5l";
     const displayName = "🔴 ACCOUNT BLOCKED - CONTACT ADMIN";
     let data = "";
     const h = new Headers();
@@ -357,7 +357,7 @@ async function proxyToBackend(request, env) {
                     // These usually look like: 
                     // # upload=... download=... total=... expire=...
                     // # 剩余流量：...
-                    data = data.replace(/^#\s*(upload|download|total|expire|剩余流量|已用流量|总流量|到期时间).*\n/gim, "");
+                    data = data.replace(/^#\s*(upload|download|total|expire|剩余流量|已用流量|總流量|到期時間).*\n/gim, "");
                     data = data.replace(/^#\s*Sub-info:.*\n/gim, "");
 
                     const h = new Headers();
