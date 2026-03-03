@@ -21,6 +21,7 @@
               </el-form-item>
 
               <el-form-item label="Node Scan:">
+                <el-button type="primary" icon="el-icon-search" @click="scanNodes" :loading="scanLoading">Scan Now</el-button>
                 <el-button v-if="advanced === '2'" type="info" icon="el-icon-user" @click="handleViewUser" :loading="syncLoading">View User</el-button>
               </el-form-item>
 
@@ -51,6 +52,7 @@
                     </el-card>
                   </el-col>
                   <el-col :span="8">
+                    <div style="font-weight: bold; margin-bottom: 10px; font-size: 13px; color: #606266;">Node Rename (Proxies)</div>
                     <el-input type="textarea" :rows="8" v-model="form.findValue" placeholder=""></el-input>
                     <el-select v-model="form.replaceValue" allow-create filterable placeholder="Select or Type" style="width: 100%; margin-top: 5px;">
                       <el-option label="Digital Freedom" value="Digital Freedom"></el-option>
@@ -415,6 +417,7 @@ export default {
       // 状态
       backendVersion: "",
       loading: false,
+      scanLoading: false,
       customShortSubUrl: "",
       dialogUploadConfigVisible: false,
       loadConfig: "",
