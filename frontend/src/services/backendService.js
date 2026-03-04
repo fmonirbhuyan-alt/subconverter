@@ -48,7 +48,7 @@ export class BackendService {
         // Ensure baseUrl is just the API root
         const baseUrl = import.meta.env.DEV ? '/api' : CONSTANTS.DEFAULT_BACKEND.replace(/\/sub\?$/, '');
         // target=clash&list=true is the industry standard for getting raw node lists
-        const backendUrl = `${baseUrl.replace(/\/$/, '')}/sub?target=clash&url=${encodeURIComponent(subUrl)}&insert=false&list=true&emoji=true`;
+        const backendUrl = `${baseUrl.replace(/\/$/, '')}/sub?target=v2ray&url=${encodeURIComponent(subUrl)}&insert=false&list=true&emoji=true`;
 
         console.log(`Scanning via Clash List: ${backendUrl}`);
         const response = await $axios.get(backendUrl, { timeout: 30000 });
