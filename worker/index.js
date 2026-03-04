@@ -247,46 +247,6 @@ async function proxyToBackend(request, env) {
         // 3. UserInfo Extraction (Disabled as per user request to hide quota/expiry)
         let realUserinfo = null;
 
-        // 4. Direct Fetch for Scan (list=true)
-        const isScan = url.searchParams.get("list") === "true";
-        if (isScan) {
-            console.log(`Scan request detected for: ${actualSub}`);
-            try {
-                const directRes = await fetch(actualSub, {
-                    headers: { "User-Agent": "v2rayNG/1.8.8" },
-                    method: "GET"
-                });
-                if (directRes.ok) {
-                    let data = await directRes.text();
-                    // Strip potential quota/expiry comments
-                    data = data.replace(/^#\s*(upload|download|total|expire|剩余流量|已用流量|总流量|到期时间).*\n/gim, "");
-                    data = data.replace(/^#\s*Sub-info:.*\n/gim, "");
-
-                    console.log(`Direct fetch successful. Content length: ${data.length}`);
-                    const h = new Headers();
-                    h.set("Access-Control-Allow-Origin", "*");
-                    h.set("Content-Type", "text/plain; charset=utf-8");
-                    h.set("Content-Disposition", `attachment; filename=${filename}`);
-                    h.set("Profile-Title", filename);
-
-                    // Update Intervals (Minutes vs Hours compatibility)
-                    h.set("Profile-Update-Interval", "2");      // Clash (Minutes)
-                    h.set("X-Config-Update-Interval", "2");    // Shadowrocket/Surfboard (Minutes)
-                    h.set("Subscription-Update-Interval", "0.033"); // Some clients parse as hours
-
-                    h.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-                    h.set("Pragma", "no-cache");
-                    h.set("Expires", "0");
-                    h.set("Access-Control-Expose-Headers", "*");
-
-                    return new Response(data, { status: 200, headers: h });
-                } else {
-                    console.warn(`Direct fetch failed with status: ${directRes.status}`);
-                }
-            } catch (e) {
-                console.warn(`Direct scan fetch error: ${e.message}`);
-            }
-        }
 
         // 5. Backend Fallback Proxy Logic
         const backends = [
